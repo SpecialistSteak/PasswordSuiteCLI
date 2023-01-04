@@ -51,6 +51,6 @@ public class PgenCommand implements Runnable {
             excludedUpper = true;
         }
         StringGenerator s1 = new StringGenerator(excludedChars);
-        System.out.println(generatePassword(s1));
+        System.out.println(stringScrambler(generatePassword(s1)));
     }
 }

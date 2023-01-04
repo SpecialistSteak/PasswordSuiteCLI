@@ -83,5 +83,4 @@ public class PasswordGeneratorCommand implements Runnable {
                 Version 2.10                                            Author: SpecialistSteak\s
                 Type -h (--help) or -ha (--helpall) to get started!""");}
     }
-
 }
