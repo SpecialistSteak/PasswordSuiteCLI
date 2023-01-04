@@ -6,7 +6,7 @@
 <br></br>
 
 # PasswordSuiteCLI
-A simple password generator which has a vast amount of specification options to generate a strong password. You can choose what characters to include, exclude, and specify the amount of a certain type of character in the password when generating a password. The actual generation makes use of SecureRandom to generate a crypotgraphically secure password, and also has the option to scramble other passwords if you want.
+A simple password generator which has a vast amount of specification options to generate a strong password. You can choose what characters to include, exclude, and specify the amount of a certain type of character in the password when generating a password. The actual generation makes use of SecureRandom to generate a crypotgraphically secure password, and also has the option to scramble other passwords.
 
 # Usage
 Run the PasswordSuite-2.10.jar from the command line using `java -jar PasswordSuite-2.10.jar <command>`
