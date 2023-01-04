@@ -1,208 +1,118 @@
 package org.specialiststeak;
 
 import java.security.SecureRandom;
+
 import static org.specialiststeak.PgenCommand.*;
 
 public class StringGenerator { //class to make the string. Actual command scrambles it, but this just makes sure specified chars are proper
-    public static final String LETTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOOPASDFGHJKLZXCVBNM";
-    public static final String LOWERCASE_LETTERS = "qwertyuiopasdfghjklzxcvbnm";
-    public static final String UPPERCASE_LETTERS = "QWERTYUIOOPASDFGHJKLZXCVBNM";
-    public static final String NUMBERS = "1234567890";
-    public static final String SYMBOLS = "`~!@#$%^&*()_+{}||:\"<>?,../;'[]\\//*-+";
-    public static final String MIX = "`~!@#$%^&*()_+{}||:\"<>?,../;'[]\\//*-+1234567890QWERTYUIOOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
-    static SecureRandom sr = new SecureRandom();
-    static int totalLengthCheck = 0;
-    static void defRandomizerCheck(Integer letters, Integer upperCase, Integer lowerCase, Integer symbols, Integer numbers,
-                       Integer minLetters, Integer minUpper, Integer minLower, Integer minNumbers, Integer minSymbols,
-                       Integer length, String exclusions) throws Exception {
-        //prelim checks
-        if (minLetters != null && (minLower != null || minUpper != null)) {
-            throw new CustomException("Error: minimum letters cannot be chosen alongside minimum lowercase letters and minimum uppercase letters. Please specify one or the other and try again.");
+    private String mix = "";
+    private String lowercase_letters = "qwertyuiopasdfghjklzxcvbnm";
+    private String uppercase_letters = "QWERTYUIOOPASDFGHJKLZXCVBNM";
+    private String numbers = "1234567890";
+    private String symbols = "`~!@#$%^&*()_+{}||:\"<>?,../;'[]\\//*-+";
+    private int length;
+    public static SecureRandom SR = new SecureRandom();
+    public StringGenerator(String exclusions) {
+        char[] exclusions2;
+        try {
+            exclusions2 = exclusions.toCharArray();
+        } catch (Exception e) {
+            exclusions2 = new char[0];
         }
-        if (letters != null && (lowerCase != null || upperCase != null)) {
-            throw new CustomException("Error: amount of letters cannot be chosen alongside amount of lowercase letters and amount of uppercase letters. Please specify one or the other and try again.");
-        }
-
-        if (minLetters != null) {
-            totalLengthCheck += minLetters;
-        } else if (letters != null) {
-            totalLengthCheck += letters;
-        }
-
-        if (minUpper != null) {
-            totalLengthCheck += minUpper;
-        } else if (upperCase != null) {
-            totalLengthCheck += upperCase;
-        }
-
-        if (minLower != null) {
-            totalLengthCheck += minLower;
-        } else if (lowerCase != null) {
-            totalLengthCheck += lowerCase;
-        }
-
-        if (minNumbers != null) {
-            totalLengthCheck += minNumbers;
-        } else if (numbers != null) {
-            totalLengthCheck += numbers;
-        }
-
-        if (minSymbols != null) {
-            totalLengthCheck += minSymbols;
-        } else if (symbols != null) {
-            totalLengthCheck += symbols;
-        }
-
-        if (totalLengthCheck > length) {
-            throw new CustomException("Error: total length exceeds desired length.");
-        }
-    }
-    static String defRandomizer(Integer letters, Integer upperCase, Integer lowerCase, Integer symbols, Integer numbers,
-                             Integer minLetters, Integer minUpper, Integer minLower, Integer minNumbers, Integer minSymbols,
-                             Integer length, String exclusions) throws Exception {
-
-        StringBuilder sb = new StringBuilder(length);
-
-        if(letters!= null){
-            for(int i = 0; i < letters; i++) {
-                if(exclusions.indexOf(LETTERS.charAt(sr.nextInt(LETTERS.length()))) < 0){
-                    sb.append(LETTERS.charAt(sr.nextInt(LETTERS.length())));
-                }
-                else{
-                    i--;
-                }
+        StringBuilder sb = new StringBuilder();
+        lowercase_letters = "qwertyuiopasdfghjklzxcvbnm";
+        uppercase_letters = "QWERTYUIOOPASDFGHJKLZXCVBNM";
+        numbers = "1234567890";
+        symbols = "`~!@#$%^&*()_+{}||:\"<>?,../;'[]\\//*-+";
+        length = (lengthInteger <= 0 ? 16 : lengthInteger);
+        for (char c : exclusions2) {
+            int index = lowercase_letters.indexOf(c);
+            if (index > -1) {
+                lowercase_letters = lowercase_letters.substring(0, index) + lowercase_letters.substring(index + 1);
+            }
+            index = uppercase_letters.indexOf(c);
+            if (index > -1) {
+                uppercase_letters = uppercase_letters.substring(0, index) + uppercase_letters.substring(index + 1);
+            }
+            index = numbers.indexOf(c);
+            if (index > -1) {
+                numbers = numbers.substring(0, index) + numbers.substring(index + 1);
+            }
+            index = symbols.indexOf(c);
+            if (index > -1) {
+                symbols = symbols.substring(0, index) + symbols.substring(index + 1);
             }
         }
-        else if(minLetters!= null){
-            for(int i = 0; i < minLetters; i++) {
-                if(exclusions.indexOf(LETTERS.charAt(sr.nextInt(LETTERS.length()))) < 0){
-                    sb.append(LETTERS.charAt(sr.nextInt(LETTERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-
-        if(upperCase!= null){
-            for(int i = 0; i < upperCase; i++) {
-                if(exclusions.indexOf(UPPERCASE_LETTERS.charAt(sr.nextInt(UPPERCASE_LETTERS.length()))) < 0){
-                    sb.append(UPPERCASE_LETTERS.charAt(sr.nextInt(UPPERCASE_LETTERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-        else if(minUpper!= null){
-            for(int i = 0; i < minUpper; i++) {
-                if(exclusions.indexOf(UPPERCASE_LETTERS.charAt(sr.nextInt(UPPERCASE_LETTERS.length()))) < 0){
-                    sb.append(UPPERCASE_LETTERS.charAt(sr.nextInt(UPPERCASE_LETTERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-
-        if(lowerCase!= null){
-            for(int i = 0; i < lowerCase; i++) {
-                if(exclusions.indexOf(LOWERCASE_LETTERS.charAt(sr.nextInt(LOWERCASE_LETTERS.length()))) < 0){
-                    sb.append(LOWERCASE_LETTERS.charAt(sr.nextInt(LOWERCASE_LETTERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-        else if(minLower!= null){
-            for(int i = 0; i < minLower; i++) {
-                if(exclusions.indexOf(LOWERCASE_LETTERS.charAt(sr.nextInt(LOWERCASE_LETTERS.length()))) < 0){
-                    sb.append(LOWERCASE_LETTERS.charAt(sr.nextInt(LOWERCASE_LETTERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-
-        if(numbers!= null){
-            for(int i = 0; i < numbers; i++) {
-                if(exclusions.indexOf(NUMBERS.charAt(sr.nextInt(NUMBERS.length()))) < 0){
-                    sb.append(NUMBERS.charAt(sr.nextInt(NUMBERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-        else if(minNumbers!= null){
-            for(int i = 0; i < minNumbers; i++) {
-                if(exclusions.indexOf(NUMBERS.charAt(sr.nextInt(NUMBERS.length()))) < 0){
-                    sb.append(NUMBERS.charAt(sr.nextInt(NUMBERS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-
-        if(symbols!= null){
-            for(int i = 0; i < symbols; i++) {
-                if(exclusions.indexOf(SYMBOLS.charAt(sr.nextInt(SYMBOLS.length()))) < 0){
-                    sb.append(SYMBOLS.charAt(sr.nextInt(SYMBOLS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-        else if(minSymbols!= null){
-            for(int i = 0; i < minSymbols; i++) {
-                if(exclusions.indexOf(SYMBOLS.charAt(sr.nextInt(SYMBOLS.length()))) < 0){
-                    sb.append(SYMBOLS.charAt(sr.nextInt(SYMBOLS.length())));
-                }
-                else{
-                    i--;
-                }
-            }
-        }
-
-        for(int i = 0; i < (length - totalLengthCheck); i++){
-            sb.append(exclusions.charAt(sr.nextInt(exclusions.length())));
-        }
-
-        return stringScrambler(sb.toString());
+        sb.append(!excludedLower ? lowercase_letters : "")
+                .append(!excludedUpper? uppercase_letters : "")
+                .append(!excludedNumber ? numbers : "")
+                .append(!excludedSymbol ? symbols : "");
+        mix = sb.toString();
     }
 
-    static String stringGen(){
-        return (excludedSymbol ? SYMBOLS : "") +
-                (excludedNumber ? NUMBERS : "") +
-                (excludedLetter ? LETTERS : "") +
-                (excludedLower ? LOWERCASE_LETTERS : "") +
-                (excludedUpper ? UPPERCASE_LETTERS : "") +
-                (excludedChars != null ? excludedChars : "");
+    public String getMix() {
+        return mix;
     }
-    static String defRandomizerWithNoMinimumsOrSetAmounts(String genString, int length){
-        StringBuilder s1 = new StringBuilder(length);
-        for(int i = 0; i < s1.length(); i++){
-            s1.append(genString.charAt(sr.nextInt(genString.length())));
+    public String getLowercase_letters() {
+        return lowercase_letters;
+    }
+    public int getLength() {
+        return length;
+    }
+    public String getUppercase_letters() {
+        return uppercase_letters;
+    }
+    public String getNumbers() {
+        return numbers;
+    }
+    public String getSymbols() {
+        return symbols;
+    }
+    public static String populatePassword(int length, StringGenerator s1){
+        StringBuilder sb = new StringBuilder(s1.getLength());
+        for (int i = 0; i < s1.getLength(); i++) {
+            if (minumumUpper != 0) {
+                sb.append(String.valueOf(s1.getUppercase_letters().charAt(SR.nextInt(s1.getUppercase_letters().length()))).repeat(Math.max(0, minumumUpper)));
+            } else if (upperCaseInteger != null) {
+                sb.append(String.valueOf(s1.getUppercase_letters().charAt(i)).repeat(Math.max(0, upperCaseInteger)));
+            }
+            if (minumumLower != 0) {
+                sb.append(String.valueOf(s1.getLowercase_letters().charAt(i)).repeat(Math.max(0, minumumLower)));
+            } else if (lowerCaseInteger != null) {
+                sb.append(String.valueOf(s1.getLowercase_letters().charAt(i)).repeat(Math.max(0, lowerCaseInteger)));
+            }
+            if (minumumSymbol != 0) {
+                sb.append(String.valueOf(s1.getSymbols().charAt(i)).repeat(Math.max(0, minumumSymbol)));
+            } else if (symbolsInteger != null) {
+                sb.append(String.valueOf(s1.getSymbols().charAt(i)).repeat(Math.max(0, symbolsInteger)));
+            }
+            if (minumumNumber != 0) {
+                sb.append(String.valueOf(s1.getNumbers().charAt(i)).repeat(Math.max(0, minumumNumber)));
+            } else if (numbersInteger != null) {
+                sb.append(String.valueOf(s1.getNumbers().charAt(i)).repeat(Math.max(0, numbersInteger)));
+            }
+            if(includedChars != null){
+                sb.append(includedChars);
+            }
         }
-        return s1.toString();
+        return sb.toString();
     }
+    public static String generatePassword(StringGenerator s1){
+        StringBuilder sb = new StringBuilder(populatePassword(s1.getLength(), s1));
+        for(int i = 0; i < s1.getLength() - populatePassword(s1.getLength(), s1).length(); i++){
+            sb.append(s1.getMix().charAt(SR.nextInt(s1.getMix().length())));
+        }
+        return sb.toString();
+    }
+
     static String stringScrambler(String toScramble){
         char[] chars = toScramble.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            int j = sr.nextInt(chars.length);
+            int j = SR.nextInt(chars.length);
             char tmp = chars[i];
             chars[i] = chars[j];
             chars[j] = tmp;
         }
         return new String(chars);
-    }
-}
-class CustomException extends Exception {
-    public CustomException(String message) {
-        super(message);
     }
 }

@@ -50,7 +50,7 @@
               <transformers>
                 <transformer implementation=
                                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.specialistSteak.PasswordSuiteCommand</mainClass>
+                  <mainClass>org.specialistSteak.PasswordGeneratorCommand</mainClass>
                 </transformer>
               </transformers>
             </configuration>

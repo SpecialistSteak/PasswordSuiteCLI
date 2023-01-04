@@ -20,7 +20,7 @@
               <shadedArtifactAttached>true</shadedArtifactAttached>
               <transformers>
                 <transformer>
-                  <mainClass>org.specialistSteak.PasswordSuiteCommand</mainClass>
+                  <mainClass>org.specialistSteak.PasswordGeneratorCommand</mainClass>
                 </transformer>
               </transformers>
             </configuration>
