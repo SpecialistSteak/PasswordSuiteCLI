@@ -12,6 +12,7 @@ public class ScrambleCommand implements Runnable {
     @CommandLine.Parameters
     private String stringToScramble;
 
+    //call on scramble command
     @Override
     public void run(){
         System.out.println(stringScrambler(stringToScramble));

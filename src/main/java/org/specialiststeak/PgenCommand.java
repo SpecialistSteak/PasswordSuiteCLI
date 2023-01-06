@@ -46,10 +46,13 @@ public class PgenCommand implements Runnable {
 
     @Override
     public void run(){
+        //for simplicity make excluded letter exclude upper and lower
         if(excludedLetter){
             excludedLower = true;
             excludedUpper = true;
         }
+
+        //call on password generation commands
         StringGenerator s1 = new StringGenerator(excludedChars);
         System.out.println(stringScrambler(generatePassword(s1)));
     }

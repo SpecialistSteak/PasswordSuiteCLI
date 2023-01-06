@@ -5,13 +5,18 @@ import java.security.SecureRandom;
 import static org.specialiststeak.PgenCommand.*;
 
 public class StringGenerator { //class to make the string. Actual command scrambles it, but this just makes sure specified chars are proper
+    //instance variables
     private String mix = "";
     private String lowercase_letters = "qwertyuiopasdfghjklzxcvbnm";
     private String uppercase_letters = "QWERTYUIOOPASDFGHJKLZXCVBNM";
     private String numbers = "1234567890";
     private String symbols = "`~!@#$%^&*()_+{}||:\"<>?,../;'[]\\//*-+";
     private int length;
+
+    //secure random for random generation
     public static SecureRandom SR = new SecureRandom();
+
+    //constructor to make basic data to pull from
     public StringGenerator(String exclusions) {
         char[] exclusions2;
         try {
@@ -19,14 +24,17 @@ public class StringGenerator { //class to make the string. Actual command scramb
         } catch (Exception e) {
             exclusions2 = new char[0];
         }
+
+        //char array exclusions makes each exclusion a char
         StringBuilder sb = new StringBuilder();
         lowercase_letters = "qwertyuiopasdfghjklzxcvbnm";
         uppercase_letters = "QWERTYUIOOPASDFGHJKLZXCVBNM";
         numbers = "1234567890";
         symbols = "`~!@#$%^&*()_+{}||:\"<>?,../;'[]\\//*-+";
-        length = (lengthInteger <= 0 ? 16 : lengthInteger);
+        length = (lengthInteger <= 0 ? 16 : lengthInteger); //check for length, set to 16 for default
         for (char c : exclusions2) {
             int index = lowercase_letters.indexOf(c);
+            //remove all the exclusions from respective strings
             if (index > -1) {
                 lowercase_letters = lowercase_letters.substring(0, index) + lowercase_letters.substring(index + 1);
             }
@@ -43,13 +51,24 @@ public class StringGenerator { //class to make the string. Actual command scramb
                 symbols = symbols.substring(0, index) + symbols.substring(index + 1);
             }
         }
-        sb.append(!excludedLower ? lowercase_letters : "")
-                .append(!excludedUpper? uppercase_letters : "")
-                .append(!excludedNumber ? numbers : "")
-                .append(!excludedSymbol ? symbols : "");
+
+        //append new strings (w/o exclusions) to 'mix', if limit exists do not append either
+        if(!(excludedLower || upperCaseInteger == null)) {
+            sb.append(uppercase_letters);
+        }
+        if(!(excludedUpper || lowerCaseInteger == null)){
+            sb.append(lowercase_letters);
+        }
+        if(!(excludedNumber || numbersInteger == null)){
+            sb.append(numbers);
+        }
+        if(!(excludedSymbol || symbolsInteger == null)){
+            sb.append(symbols);
+        }
         mix = sb.toString();
     }
 
+    //getters, no need for setters
     public String getMix() {
         return mix;
     }
@@ -68,9 +87,12 @@ public class StringGenerator { //class to make the string. Actual command scramb
     public String getSymbols() {
         return symbols;
     }
+
+    //method to fill in the password based off of specifications of password object
     public static String populatePassword(int length, StringGenerator s1){
         StringBuilder sb = new StringBuilder(s1.getLength());
         for (int i = 0; i < s1.getLength(); i++) {
+            //if minimums are present, account for them and fill them in accordingly
             if (minumumUpper != 0) {
                 sb.append(String.valueOf(s1.getUppercase_letters().charAt(SR.nextInt(s1.getUppercase_letters().length()))).repeat(Math.max(0, minumumUpper)));
             } else if (upperCaseInteger != null) {
@@ -97,6 +119,8 @@ public class StringGenerator { //class to make the string. Actual command scramb
         }
         return sb.toString();
     }
+
+    //fill the rest of the password
     public static String generatePassword(StringGenerator s1){
         StringBuilder sb = new StringBuilder(populatePassword(s1.getLength(), s1));
         for(int i = 0; i < s1.getLength() - populatePassword(s1.getLength(), s1).length(); i++){
@@ -105,6 +129,7 @@ public class StringGenerator { //class to make the string. Actual command scramb
         return sb.toString();
     }
 
+    //scramble a string, randomly swapping letters
     static String stringScrambler(String toScramble){
         char[] chars = toScramble.toCharArray();
         for (int i = 0; i < chars.length; i++) {

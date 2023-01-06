@@ -1,11 +1,12 @@
 package org.specialiststeak;
 
 import picocli.CommandLine;
-@CommandLine.Command(version = "2.10", mixinStandardHelpOptions = true, subcommands = {
+@CommandLine.Command(version = "2.11", mixinStandardHelpOptions = true, subcommands = {
     PgenCommand.class,
     ScrambleCommand.class
 })
 public class PasswordGeneratorCommand implements Runnable {
+    //helpall option
     @CommandLine.Option(names = {"-ha", "--helpall"}, description = "Shows all help messages.")
     private boolean helpAll;
     public static void main( String[] args ) {
@@ -80,7 +81,7 @@ public class PasswordGeneratorCommand implements Runnable {
                 | |              | || |              | || |              | || |              | |
                 | '--------------' || '--------------' || '--------------' || '--------------' |
                  '----------------'  '----------------'  '----------------'  '----------------'\s
-                Version 2.10                                            Author: SpecialistSteak\s
+                Version 2.11                                            Author: SpecialistSteak\s
                 Type -h (--help) or -ha (--helpall) to get started!""");}
     }
 }
